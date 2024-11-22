@@ -1,0 +1,60 @@
+---
+title: "Measure your code's Energy Consumption in R"
+subtitle: "Demonstration of R Workflows incorporation the Python Code Carbon Footprint"
+author: 
+  name:
+    given: Javier
+    family: Mancilla Galindo
+    literal: Javier Mancilla Galindo
+  email: j.mancillagalindo@uu.nl
+  affiliations: 
+    - name: Utrecht University
+    - department: Institute for Risk Assessment Sciences
+    - group: Occupational Health 
+    - city: Utrecht
+    - country: Netherlands
+  orcid: https://orcid.org/0000-0002-0718-467X
+date: today
+execute: 
+  echo: false
+  warning: false
+format:
+  html:
+    embed-resources: true
+    code-links:
+        - text: "GitHub"
+          href: https://github.com/javimangal/green-digital-skills-r
+          icon: github
+  pdf: 
+    toc: true
+    documentclass: scrartcl
+editor: source
+---
+
+# Introduction
+
+There is growing awareness about the impact that our coding practices have in terms of energy consumption, but also its carbon footprint. You can read more about this in the [Green Digital Skills Lesson](https://esciencecenter-digital-skills.github.io/green-digital-skills/). If you are mainly using R, you may want to learn more about the impact of your R code in terms of energy consumption and carbon footprint. However, there aren't yet as of now R packages that allow to do this in a reliable and user-friendly way. One promising tool is the [***RJoules package***](https://rishalab.github.io/RJoules/); however, it is still in development.
+
+**CarbonCode** is a Python package that estimates the carbon footprint of code. You can read more about it at https://mlco2.github.io/codecarbon/. This module is well documented and easy to use. How sad that this is only available for python... But there is a way to use it in R! If you are using R studio, you may not know it already, but it is possible and relatively easy to run Python in RStudio. This can be done through the [`reticulate` package](https://rstudio.github.io/reticulate/), which allows you to run Python code from R directly into your R script. For more complex workflows, [**Quarto**](https://quarto.org/docs/computations/python.html) can be used to combine R and Python code in the same document. In fact, Quarto markdown files (.qmd) are exceptionally good at calling R and python code in the same document, whilst also making it explicit what code belongs to R and what code belongs to Python.
+
+In this document, I will show you how to implement CodeCarbon in R using Quarto. 
+
+# Instalation
+
+The detailed instructions for installation of Python and CodeCarbon are found in the [Green Digital Skills dedicated lesson](https://esciencecenter-digital-skills.github.io/green-digital-skills/modules/software-development-handson/exercises_codecarbon). It is assumed that you have already followed these steps. 
+
+# Calling CodeCarbon in an R script
+
+First, you will need to install the `reticulate` package and load it into your session: 
+
+```{r}
+install.packages("reticulate")
+library(reticulate)
+```
+
+Then, you can call the Python CodeCarbon module in R using the following code:
+
+```{python}
+# Load the CodeCarbon module
+from codecarbon import EmissionsTracker
+
