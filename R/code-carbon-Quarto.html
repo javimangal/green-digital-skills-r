@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Javier Mancilla Galindo">
-<meta name="dcterms.date" content="2024-12-21">
+<meta name="dcterms.date" content="2025-01-07">
 
 <title>Measure your code’s Energy Consumption in R</title>
 <style>
@@ -3099,7 +3099,7 @@ vertical-align: -.125em;
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Measure your code’s Energy Consumption in R</h1>
-<p class="subtitle lead">Demonstration of R Workflows incorporation the Python Code Carbon Footprint</p>
+<p class="subtitle lead">Demonstration of R Workflows incorporating the Python CodeCarbon package</p>
 </div>
 
 
@@ -3135,7 +3135,7 @@ vertical-align: -.125em;
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">December 21, 2024</p>
+      <p class="date">January 7, 2025</p>
     </div>
   </div>
   
@@ -3149,16 +3149,17 @@ vertical-align: -.125em;
 
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
-<p>There is growing awareness about the impact that our coding practices have in terms of energy consumption, but also its carbon footprint. You can read more about this in the <a href="https://esciencecenter-digital-skills.github.io/green-digital-skills/">Green Digital Skills Lesson</a>. If you are mainly using R, you may want to learn more about the impact of your R code in terms of energy consumption and carbon footprint. However, there aren’t yet as of now R packages that allow to do this in a reliable and user-friendly way. One promising tool is the <a href="https://rishalab.github.io/RJoules/"><strong><em>RJoules package</em></strong></a>; however, it is still in development and restricted to certain operating systems more frequently used by developers (i.e., linux).</p>
-<p><strong>CarbonCode</strong> is a Python package that estimates the carbon footprint of code. You can read more about it at https://mlco2.github.io/codecarbon/. This Python module is well documented and easy to use. How sad that it is only available for python… But there is a way to use it in R! In fact, it is possible and relatively easy to run Python in RStudio. This can be done through the <a href="https://rstudio.github.io/reticulate/"><code>reticulate</code></a> package, which allows you to run Python code from R directly into your R script. For more complex workflows, <a href="https://quarto.org/docs/computations/python.html"><strong>Quarto</strong></a> can be used to combine R and Python code in the same document. In fact, Quarto markdown files (.qmd) are exceptionally good at calling R and Python code in the same document, whilst also making it explicit what code belongs to R and what code belongs to Python.</p>
-<p>This tutorial shows how to implement CodeCarbon in R by using Quarto tools in RStudio. An example workflow is provided by measuring the carbon footprint of different packages and modelling strategies accounting for induced time-varying confounding in the built-in R <code>ChickWeight</code> dataset.</p>
+<p>There is growing awareness about the impact that our coding practices have in terms of energy consumption, but also its carbon footprint. The Netherlands eScience Center has developed a lesson on this topic: <a href="https://esciencecenter-digital-skills.github.io/green-digital-skills/">Green Digital Skills Lesson</a>. If you are mainly coding in R, you may want to learn more about the impact of your R code in terms of energy consumption and carbon footprint. However, there aren’t yet as of now R packages that allow to do this in a reliable and user-friendly way. One promising tool is the <a href="https://rishalab.github.io/RJoules/"><strong><em>RJoules package</em></strong></a>; however, it is still in development and restricted to certain operating systems frequently used by developers (i.e., linux).</p>
+<p><strong>CarbonCode</strong> is a Python package that estimates the carbon footprint of code. You can <a href="https://mlco2.github.io/codecarbon/">read more about it here</a>. This Python module is well documented and easy to use. How sad that it is only available for Python… But there is a way to use it in R! In fact, it is possible and relatively easy to run Python in RStudio. This can be done through the <a href="https://rstudio.github.io/reticulate/"><code>reticulate</code></a> package, which allows you to run Python code from R directly into your R script. For more complex workflows, <a href="https://quarto.org/docs/computations/python.html"><strong>Quarto</strong></a> can be used to combine R and Python code in the same document. In fact, Quarto markdown files (.qmd) are exceptionally good at calling R and Python code in the same document, whilst also making it explicit what code belongs to R or Python, using the native syntax for both languages in the same document and analysis workflow.</p>
+<p>This tutorial is an extension to the <a href="https://esciencecenter-digital-skills.github.io/green-digital-skills/">Green Digital Skills Lesson</a> and shows how to implement CodeCarbon in R through RStudio. An example workflow is provided by measuring the carbon footprint of different R packages used to fit mixed-effects models. Additionally, time-varying confounding is introduced into the built-in R <code>ChickWeight</code> data through simulation to compare how different statistical modelling strategies to account for confounding compare in terms of their carbon footprint.</p>
 </section>
 <section id="instalation" class="level1">
 <h1>Instalation</h1>
 <p>The detailed instructions for installation of Python and CodeCarbon are found in the <a href="https://esciencecenter-digital-skills.github.io/green-digital-skills/modules/software-development-handson/exercises_codecarbon">Green Digital Skills dedicated lesson</a>. It is assumed that you have already followed these steps.</p>
+<p>If you have not done so, <a href="https://posit.co/download/rstudio-desktop/">install R and RStudio</a>. Note that these demonstrations were conducted under R version 4.4.0 and RStudio 2024.04.0, so it is recommended that you install these or more recent versions.</p>
 <section id="calling-codecarbon-in-an-r-script" class="level2">
 <h2 class="anchored" data-anchor-id="calling-codecarbon-in-an-r-script">Calling CodeCarbon in an R script</h2>
-<p>The following workflow is available in this <a href="https://github.com/javimangal/green-digital-skills-r/blob/main/R/code-carbon-script.R">R script</a>, which you can reuse and adapt to test your code.</p>
+<p>The following workflow is available in this <a href="../R/code-carbon-script.R">sample R script</a>, which you can reuse and adapt to test your code.</p>
 <p>First, you will need to install the <code>reticulate</code> package and load it into your session:</p>
 <pre><code>install.packages(&quot;reticulate&quot;)
 library(reticulate)</code></pre>
@@ -3166,7 +3167,7 @@ library(reticulate)</code></pre>
 <pre><code>codecarbon &lt;- import(&quot;codecarbon&quot;)</code></pre>
 <p>Import the OfflineEmissionsTracker class</p>
 <pre><code>OfflineEmissionsTracker &lt;- codecarbon$OfflineEmissionsTracker</code></pre>
-<p>Set the emission trackers parameter and initialize. This will automatically detect your system’s characteristics and open a file to save the report later on. You can also specify the country code, timing of measurements, among others. See the <a href="https://mlco2.github.io/codecarbon/parameters.html#id6">CodeCarbon documentation</a> for more details:</p>
+<p>Set the emissions trackers parameter and initialize. This will automatically detect your system’s characteristics and open a file to save the report later on. You can also specify the country code, timing of measurements, among others. See the <a href="https://mlco2.github.io/codecarbon/parameters.html#id6">CodeCarbon documentation</a> for more details:</p>
 <pre><code>tracker &lt;- OfflineEmissionsTracker(
   country_iso_code = &quot;NLD&quot;,
   measure_power_secs = 5
@@ -3194,20 +3195,25 @@ tracker$stop()</code></pre>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>RStudio automatically processes the programming language. R is the default language in Quarto when introducing code blocks. If you want to run Python code, you need to change <code>r</code> for the the <code>python</code> tag.</p>
-<p>The advantage of using quarto is that you don’t need to rewrite python code into the <code>reticulate</code> syntax. You can simply copy and paste the python code into the <code>python</code> code block. This is a great advantage when you are not familiar with Python, when you want to reuse well-documented native python code, or simply to efficiently communicate with python programmers.</p>
+<p>The advantage of using Quarto is that you don’t need to rewrite python code using the <code>reticulate</code> syntax. You can simply copy and paste the python code into the <code>python</code> code block. This is a great advantage when you are not familiar with Python and you want to reuse well-documented native python code, or simply to efficiently communicate with python programmers.</p>
 <p>Because Rstudio loads the reticulate package once it reads the <code>python</code> tag, you don’t need to load the <code>reticulate</code> package in the code block. Thus, we will start by calling the CodeCarbon module in Python.</p>
+<p>Start by pressing the play button below that reads “Run Current Chunk”:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the CodeCarbon module</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> codecarbon <span class="im">import</span> EmissionsTracker</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> codecarbon <span class="im">import</span> OfflineEmissionsTracker</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Then, we will initialize the tracker and start tracking the emissions.</p>
+<p>Then, we will initialize the tracker and start tracking the emissions. Beware that you will need to stop tracking the emissions before with the code that will appear later on in this document to start a new tracker.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize the tracker</span></span>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize tracker</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>tracker <span class="op">=</span> OfflineEmissionsTracker(country_iso_code<span class="op">=</span><span class="st">&quot;NLD&quot;</span>,</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                                 measure_power_secs<span class="op">=</span><span class="dv">5</span>)</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Start tracking the emissions</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>tracker.start()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Safety check to avoid running multiple trackers at the same time. </span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">getattr</span>(tracker, <span class="st">&quot;_start_time&quot;</span>, <span class="va">None</span>) <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Warning: Tracker is already running! Did you forget to stop it?&quot;</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    tracker.start()</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Tracker started successfully.&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You can now change to R language by using the <code>r</code> tag.</p>
 <div class="cell">
@@ -3218,17 +3224,19 @@ tracker$stop()</code></pre>
 <p>Finally, you can stop tracking the emissions and print the results. You will again find the report as a csv file in your default working directory.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>emissions: <span class="bu">float</span> <span class="op">=</span> tracker.stop()</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(emissions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;Emissions tracked: </span><span class="sc">{</span>emissions<span class="sc">}</span><span class="ss"> kg CO₂e&quot;</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Note: This value represents the estimated carbon emissions equivalent in kilograms.&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Combining R and Python code in a .qmd file will work best if (1) you have a good understanding of both languages, and (2) when rendering your document to any of the output report files implemented in Quarto (i.e., PDF, docx, slides, etc). This is because code blocks are executed in the order they are found in the document. However, if you mainly work with R scripts, running CodeCarbon with the <code>reticulate</code> package in R will be the best approach.</p>
+<p>Combining R and Python code in a .qmd file will work best if you are rendering your document to any of the output report files implemented in Quarto (i.e., PDF, docx, slides, etc). This is because code blocks are executed in the order they are found in the document. However, if you mainly work with R scripts, running CodeCarbon with the <code>reticulate</code> package in R will be the best approach.</p>
+<p>For the demonstration, a hybrid approach is used where individual R scripts are adapted from the <a href="../R/code-carbon-script.R">sample R script</a> to include CodeCarbon tracking for every individual task. The individual R scripts are then sourced into this Quarto document to demonstrate the energy consumption and carbon footprint of different R packages used to fit mixed-effects models. This model workflow produces an individual output report for every R script and task, which can be found in the <code>emissions</code> folder. This approach will offer precise measurements since every script starts with the initialization of the tracker and ends with the stop command.</p>
 </section>
 </section>
 <section id="demonstration" class="level1">
 <h1>Demonstration</h1>
-<p>We will compare two R packages commonly used to fit mixed-effects models that are often compared due to their computational speed. <code>lme4</code> is suitable for generalized linear mixed models, runs in C++, and is optimized for speed <span class="citation" data-cites="bates2015">(<a href="#ref-bates2015" role="doc-biblioref">Bates et al. 2015</a>)</span>, whereas <code>nlme</code> can additionally fit non-linear models, but is written in R language (before: S and S-Plus) which makes computations slower and with a potentially higher carbon footprint <span class="citation" data-cites="pinheiro2000">(<a href="#ref-pinheiro2000" role="doc-biblioref">Pinheiro and Bates 2000</a>)</span>.</p>
-<p>However, there are often preliminary modelling steps needed when trying to elucidate the main effects with these two packages. One example is time varying confounding, for which different modelling approaches have been proposed. Inverse probability weighting (IPW) is a powerful tool for such analyses, but many different models can be used to obtain inverse probability weights to be used in the main mixed-effects models. Generalized linear models can be used as a fast an computationally efficient option to obtain IPW through the built-in <code>stats</code> R package, which is written in R and C language, but is highly susceptible to incorrect model specification. Novel non-parametric methods are robust to model misspecification <span class="citation" data-cites="fong2018">(<a href="#ref-fong2018" role="doc-biblioref">Fong, Hazlett, and Imai 2018</a>)</span>, and are implemented in the <code>CBPS</code> package, which despite running in C++ for computational efficiency, uses intensive and lengthy calculations. These two methods will be compared using Python <code>CodeCarbon</code>. We will use the <code>WeightIt</code> package written in R language <span class="citation" data-cites="greifer2017">(<a href="#ref-greifer2017" role="doc-biblioref">Greifer 2017</a>)</span>, which has implemented these two methods and many others which can be similarly tested and compared in terms of energy consumption and carbon footprint.</p>
+<p>We will compare two R packages commonly used to fit mixed-effects models that are often compared due to their computational speed. <code>lme4</code> is suitable for generalized linear mixed models, runs in C++, and is optimized for speed <span class="citation" data-cites="bates2015">(<a href="#ref-bates2015" role="doc-biblioref">Bates et al. 2015</a>)</span>, whereas <code>nlme</code> can additionally fit non-linear models, but is written in R language (before: S and S-Plus) which makes computations somewhat slower and with a potentially higher carbon footprint <span class="citation" data-cites="pinheiro2000">(<a href="#ref-pinheiro2000" role="doc-biblioref">Pinheiro and Bates 2000</a>)</span>.</p>
+<p>However, there are often preliminary modelling steps needed when trying to elucidate the main effects with these two packages. One example is time varying confounding, for which different modelling approaches have been proposed. Inverse probability weighting (IPW) is a powerful tool for such analyses, but many different models can be used to obtain inverse probability weights to be used in the main mixed-effects models. Generalized linear models can be used as a fast an computationally efficient option to obtain IPW through the built-in <code>stats</code> R package, which is written in R and C language, but is highly susceptible to incorrect model specification. Novel non-parametric methods are robust to model misspecification <span class="citation" data-cites="fong2018">(<a href="#ref-fong2018" role="doc-biblioref">Fong, Hazlett, and Imai 2018</a>)</span>, and are implemented in the <code>CBPS</code> package, which despite running in C++ for computational efficiency, uses intensive and lengthy calculations. These two methods will be compared using Python <code>CodeCarbon</code>. We will use the <code>WeightIt</code> package written in R language <span class="citation" data-cites="greifer2017">(<a href="#ref-greifer2017" role="doc-biblioref">Greifer 2017</a>)</span>, which has implemented these two methods and many others which can similarly be tested and compared in terms of energy consumption and carbon footprint.</p>
 <p>We will use the built-in R <code>ChickWeight</code> dataset to simulate new data with time-varying treatment-outcome confounding to study the effect of 4 different diets on weight, by accounting for the confounding effect of a time-varying binary disease 1, and an ordinal disease 2, which disease status may also vary in time.</p>
-<p>First, install and load all the necessary R packages to avoid these one-time installations being tracked by CodeCarbon. The <code>pacman</code> package nicely handles installation and loading:</p>
+<p>First, install and load all the necessary R packages to avoid these one-time installations being tracked by CodeCarbon. The <code>pacman</code> package nicely handles installation and loading.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;pacman&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">&quot;pacman&quot;</span>)</span>
@@ -3241,20 +3249,20 @@ tracker$stop()</code></pre>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  lme4,             <span class="co"># Used to fit linear mixed-effects models.</span></span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  nlme,             <span class="co"># Used to fit non-linear mixed-effects models.</span></span>
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  WeightIt,         <span class="co"># Used to obtain inverse probability weights (IPW).</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  CBPS             <span class="co"># Used to obtain non-parametric CBPS IPW.</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  CBPS              <span class="co"># Used to obtain non-parametric CBPS IPW.</span></span>
 <span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="fu">conflicts_prefer</span>(dplyr<span class="sc">::</span>select, dplyr<span class="sc">::</span>lag, dplyr<span class="sc">::</span>filter)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We now simulate the data and measure the time required to complete and it’s carbon footprint. The input and output parameters have been adapted in the R script to save the output file in the <code>emissions</code> folder. By running this chunk of code, you will also see the live emissions tracking as R console output.</p>
 <blockquote class="blockquote">
-<p>Important! If you interrupt the code before it finishes, emissions will keep to be tracked and shown until you stop it by running the last line in the scripts. This is important to keep in mind when running new code chunks and start a new tracker.</p>
+<p>Important! If the code is interrupted before finishing, emissions will keep to be tracked and shown until you stop it by running the last line in the scripts. This is important to keep in mind when running new code chunks and start a new tracker. Run tracker$stop() whenever your code is prematurely interrupted before reaching the end of the script.</p>
 </blockquote>
-<p>Tip: If any of the scripts take too long to run, you can try modifying the <code>sample_size</code> parameter in the <em>data_simulation.R</em> script. This can also be changed to explore emissions with different sample sizes.</p>
+<p>Tip: If any of the scripts take too long to run, you can try modifying the <code>sample_size</code> parameter in the <em>data_simulation.R</em> script. This will also be changed below in this code file to explore emissions with different sample sizes.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;data-simulation.R&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Let’s now measure the energy consumption of obtaining inverse probability weights with a generalized linear model in the built-in <code>stats</code> R package.</p>
+<p>Let’s now measure the energy consumption of obtaining inverse probability weights with a generalized linear model (glm) in the built-in <code>stats</code> R package.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;ipw_glm.R&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -3290,11 +3298,11 @@ tracker$stop()</code></pre>
 <span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>analysis_data <span class="ot">&lt;-</span> analysis_data <span class="sc">%&gt;%</span></span>
 <span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(lag_disease_1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We will use the IPW obtained with glm.</p>
+<p>We will use the IPW obtained with glm for faster computations.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;ipw_glm.R&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>And now we can compare the energy consumption of fitting the exact same model with the two packages.</p>
+<p>And now we can compare the energy consumption of fitting the exact same model with the <code>lme4</code> and <code>nlme</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;mixed_model_lme4.R&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -3306,7 +3314,7 @@ tracker$stop()</code></pre>
 <section id="license" class="level1">
 <h1>License</h1>
 <blockquote class="blockquote">
-<p>This work is the result of a contribution to the pilot <a href="https://esciencecenter-digital-skills.github.io/green-digital-skills/">Green Digital Skills lesson</a> of the Netherlands eScience Center. All contents are licensed by Utrecht University under the terms of the <a href="../LICENSE">MIT license</a>.</p>
+<p>All contents are licensed by Utrecht University under the terms of the <a href="../LICENSE">MIT license</a> This work is the result of a contribution to the pilot <a href="https://esciencecenter-digital-skills.github.io/green-digital-skills/">Green Digital Skills lesson</a> of the Netherlands eScience Center, please refer to the copyright notice in their website for any uses related to the full Green Digital Skills Lesson.</p>
 </blockquote>
 
 </section>

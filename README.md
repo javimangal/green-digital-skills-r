@@ -42,8 +42,10 @@ There is a sample R script you can reuse and adapt to test your code. Open the f
 
 ## Project Structure
 
-The project structure distinguishes three kinds of folders: - read-only (RO): not edited by either code or researcher - human-writeable (HW): edited by the researcher only.
-- project-generated (PG): folders generated when running the code; these folders can be deleted or emptied and will be completely reconstituted as the project is run.
+The project structure distinguishes three kinds of folders:  
+-  read-only (RO): not edited by either code or researcher  
+-  human-writeable (HW): edited by the researcher only.  
+-  project-generated (PG): folders generated when running the code; these folders can be deleted or emptied and will be completely reconstituted as the project is run.   
 
 ```         
 .
@@ -51,10 +53,8 @@ The project structure distinguishes three kinds of folders: - read-only (RO): no
 ├── CITATION.cff
 ├── LICENSE
 ├── README.md
+├── green-digital-skills-r.Rproj
 ├── docs               <- Documentation notebook for users (HW)
-├── results
-│   ├── figures        <- Figures for the manuscript or reports (PG)
-│   └── output         <- Other output for the manuscript or reports (PG)
 └── R                  <- Source code for this project (HW)
 ```
 

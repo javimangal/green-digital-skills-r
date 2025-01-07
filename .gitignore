@@ -3,6 +3,10 @@
 /data/processed
 /data/raw
 
+# Emissions reports (to protect personal computer data)
+R/emissions/*.csv
+R/emissions.csv
+
 # History files
 .Rhistory
 .Rapp.history
