@@ -1,3 +1,5 @@
+This repository is deprecated. All relevant content has been migrated an is maintained in: [https://github.com/UtrechtUniversity/code-carbon-r](https://github.com/UtrechtUniversity/code-carbon-r)
+
 # Green Digital Skills with R
 
 This is a demonstration of the implementation of Green Code (python) in R-based workflows to measure the energy consumption of individual snippets of code, scripts, and rendered documents (i.e., Rmd/qmd).
